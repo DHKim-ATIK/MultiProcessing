@@ -37,9 +37,8 @@ if __name__=="__main__":
     freeze_support()
 
     TotalCalculateCount=100000000
-    IterCount=1 #리스트로 가정하기 위함
+    IterCount=3 #리스트로 가정하기 위함
     CPUCount=os.cpu_count()
-    CalculateCount=TotalCalculateCount/CPUCount
     list_Worker=list()
     list_WorkerQueue=list()
     MainQueue=Queue()
@@ -54,6 +53,8 @@ if __name__=="__main__":
         list_Worker.append(process)
         process.daemon=True
         process.start()
+
+    CalculateCount=int(TotalCalculateCount/len(list_Worker))
     
     print(str(datetime.now())+" Process start done")
 
@@ -62,8 +63,7 @@ if __name__=="__main__":
             Data=ProcessData()
             Data.DataCount=CalculateCount
             inputindex=int(index%len(list_Worker))
-            print("Iter : "+str(Iter)+", input index : "+str(inputindex))
-            Data.DataName=str(inputindex)
+            Data.DataName=str(Iter)+", "+str(inputindex)
             list_WorkerQueue[inputindex].put(Data)
     print(str(datetime.now())+" All Process data input done")
 
